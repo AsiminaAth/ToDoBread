@@ -9,5 +9,4 @@ class ToDoBreadApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
