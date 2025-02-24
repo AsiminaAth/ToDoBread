@@ -6,6 +6,8 @@ aligns it with the single responsibility principle,
 as it now only handles the application startup logic. 
 */
 
+/* The API should be available at http://localhost:8080/todos. */
+
 package com.example.ToDoBread;
 
 import org.springframework.boot.SpringApplication;
