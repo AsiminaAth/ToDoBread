@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+/* Building the main component of the frontend application. */
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import React, { useEffect, useState } from "react";
+import { Todo } from "../src/models/ToDo_FE";
+import { getTodos, createTodo } from "./services/todoService";
+
+const App: React.FC = () => {
+    const [todos, setTodos] = useState<Todo[]>([]);
+    const [task, setTask] = useState("");
+
+    useEffect(() => {
+        fetchTodos();
+    }, []);
+
+    const fetchTodos = async () => {
+        const data = await getTodos();
+        setTodos(data);
+    };
+
+    const addTodo = async () => {
+        if (!task) return;
+        const newTodo = await createTodo({ task, status: "pending" });
+        setTodos([...todos, newTodo]);
+        setTask("");
+    };
+
+    return (
+        <div style={{ padding: "20px" }}>
+            <h1>TODO List - How to Fix Bread</h1>
+            <input
+                type="text"
+                value={task}
+                onChange={(e) => setTask(e.target.value)}
+                placeholder="Enter a fix for bread..."
+            />
+            <button onClick={addTodo}>Add</button>
+            <ul>
+                {todos.map((todo) => (
+                    <li key={todo.id}>
+                        {todo.task} - {todo.status}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
 
 export default App;
